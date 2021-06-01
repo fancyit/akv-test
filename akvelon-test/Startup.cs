@@ -6,6 +6,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Swashbuckle.AspNetCore.Swagger;
+
 
 namespace akvelon_test
 {
@@ -30,7 +32,23 @@ namespace akvelon_test
 
             services.AddControllers()
                 .AddNewtonsoftJson(o =>
-                o.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);            
+                o.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+            // swagger enable
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
+                {
+                    Version = "v1",
+                    Title = "Akv-test",
+                    Description = "Swagger for akv-test app",                    
+                    Contact = new Microsoft.OpenApi.Models.OpenApiContact()
+                    {
+                        Name = "Anton Bolotnov",
+                        Email = "antonbolotnov@gmail.com"
+                        //Url = new System.Uri("http://google.com")
+                    }
+                });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -40,6 +58,12 @@ namespace akvelon_test
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
+            });
 
             app.UseRouting();
 

@@ -37,14 +37,24 @@ namespace akvelon_test.Controllers
             return tasks;
         }
 
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet("[action]")]
         public TaskItem GetTaskItemById([FromQuery] int id)
         {
             return taskService.GetTaskItemById(id);
         }
 
-
+        /// <summary>
+        /// Task item as param
+        /// Creates new task, related to the project you should pass as taskItem.ProjectName
+        /// otherwise badrequest will return
+        /// </summary>
+        /// <param name="taskItem"></param>
+        /// <returns></returns>
         [HttpPost("[action]")]
         public async Task<IActionResult> CreateTask([FromBody] TaskItem taskItem)
         {
@@ -62,7 +72,13 @@ namespace akvelon_test.Controllers
             }
         }
 
-
+        /// <summary>
+        /// Accepts the task id as param and deletes it if found
+        /// otherwise badrequest status returns with mention that
+        /// provided id is not found
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpDelete("[action]")]
         public async Task<IActionResult> DeleteTask([FromQuery] int id)
         {
@@ -79,9 +95,12 @@ namespace akvelon_test.Controllers
             }
         }
 
-        // You should always pass the values even if those didn't been changed since
-        // default value could be set in case of missing some props in passing object to the method 
-
+        /// <summary>
+        /// You should always pass the values even if those didn't been changed since
+        /// default value could be set in case of missing some props in passing object to the method 
+        /// </summary>
+        /// <param name="taskItem">Accepts the task item as param</param>
+        /// <returns></returns>
         [HttpPatch("[action]")]
         public async Task<IActionResult> UpdateTask([FromBody] TaskItem taskItem)
         {
@@ -98,8 +117,14 @@ namespace akvelon_test.Controllers
             }
         }
 
-        // To be done(not finished testing yet)
-        // update the range of tasks at once
+        /// <summary>
+        /// To be done(not finished testing yet) 
+        /// update the range of tasks at once
+        /// Do not forget to pass all props of the exisitng Task items since if 
+        /// won't the default values of type would be set
+        /// </summary>
+        /// <param name="taskItems"> Accepts the array of type of taskItems </param>
+        /// <returns>Ok or error description</returns>        
         [HttpPatch("[action]")]
         public async Task<IActionResult> UpdateTaskRange([FromBody] List<TaskItem> taskItems)
         {
