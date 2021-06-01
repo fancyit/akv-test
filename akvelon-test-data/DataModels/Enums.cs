@@ -1,18 +1,16 @@
-﻿namespace akvelon_test_data.DataModels
+﻿namespace akvelon_test_data.DataModels.Enums
 {
-    public class Enums
-    {
-        public enum ProjectStatus
-        {
-            NotStarted,
-            Active,
-            Completed
-        }
-        public enum TaskItemStatus
+    public enum TaskItemStatus
         {
             ToDo,
             InProgress,
             Done
         }
+    public enum ProjectStatus
+    {
+        NotStarted,
+        Active,
+        Completed
     }
 }
+

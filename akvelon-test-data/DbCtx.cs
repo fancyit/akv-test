@@ -1,7 +1,7 @@
 ﻿using akvelon_test_data.DataModels;
 using Microsoft.EntityFrameworkCore;
 using System;
-using static akvelon_test_data.DataModels.Enums;
+using akvelon_test_data.DataModels.Enums;
 
 namespace akvelon_test_data
 {

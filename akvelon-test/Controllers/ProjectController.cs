@@ -25,11 +25,15 @@ namespace akvelon_test.Controllers
             List<Project> projects = pService.GetProjects();
             return projects;
         }
+        
+        
         [HttpGet("[action]")]
         public Project GetProjectByName([FromQuery] string Name)
         {
             return pService.GetProjectByName(Name);
         }
+
+
         [HttpPost("[action]")]
         public async Task<IActionResult> CreateProject([FromBody] Project project)
         {
@@ -43,38 +47,30 @@ namespace akvelon_test.Controllers
             {
                 return BadRequest(string.Format("Probably project with name {0} already exists", project.Name));
             }
-            
-            
         }
+        
+        
         [HttpDelete("[action]")]
         public async Task<IActionResult> DeleteProject([FromQuery] string Name)
         {
             Project project = pService.GetProjectByName(Name);
-            try
-            {
-                await pService.DeleteProject(project);
-                return Ok(string.Format("Project {project.Name} has been deleted successfully"));
-            }
-            catch (System.Exception e)
-            {
-                return BadRequest("Error, details: " + e.InnerException.Message);
-            }            
+            await pService.DeleteProject(project);
+            
+            return Ok(string.Format("Project {0} has been deleted successfully", Name));
+                      
         }
+
+        // This method to update the project data only
+        // and not related tasks
+        // for tasks update use the TaskController
         [HttpPatch("[action]")]
         public async Task<IActionResult> UpdateProject([FromBody] Project project)
         {
             Project updatedProject = new Project();
             Utills.Merge<Project>(ref updatedProject, project);
-            try
-            {
-                await pService.UpdateProject(updatedProject);
-                return Ok("project {project.Name} has been updated");
-            }
-            catch (System.Exception e)
-            {
-                return BadRequest("Error :" + e.InnerException.Message);
-                throw;
-            }
+            await pService.UpdateProject(updatedProject);
+            return Ok(string.Format("project {0} has been updated", project.Name));
+            
         }
     }
 }

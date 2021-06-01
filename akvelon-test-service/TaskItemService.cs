@@ -32,24 +32,25 @@ namespace akvelon_test_service
                 throw;
             }
         }
-        public async Task CreateTaskList(List<TaskItem> tasks, string projectName)
+        public async Task CreateTaskList(List<TaskItem> taskList, string projectName)
         {
+            List<TaskItem> newList = new List<TaskItem>();
             try
             {
-                foreach (TaskItem item in tasks)
+                for (int i=0; i< taskList.Count; i++)
                 {
-                    _context.Add(new TaskItem
-                    {
-                        Name = item.Name,
-                        Description = item.Description,
-                        Priority = item.Priority,
-                        CurrentStatus = item.CurrentStatus,
-                        ProjectName = projectName
-                    }
-                    );
 
-                }
-                _context.SaveChanges();
+                    newList.Add(new TaskItem
+                    {
+                        Name = taskList[i].Name,
+                        Description = taskList[i].Description,
+                        Priority = taskList[i].Priority,
+                        CurrentStatus = taskList[i].CurrentStatus,
+                        ProjectName = projectName
+                    });
+                 }
+                _context.AddRange(newList);
+                await _context.SaveChangesAsync();
             }
             catch (Exception e)
             {
@@ -72,33 +73,54 @@ namespace akvelon_test_service
             }
         }
 
-        public async Task<TaskItem> GetTaskItemById(int id)
+        public TaskItem GetTaskItemById(int id)
         {
-            return await _context.TaskItems
+            return _context.TaskItems
                 .Where(t => t.Id == id)
                 .Include(t => t.Project)
-                .FirstOrDefaultAsync();
+                .FirstOrDefault();
         }
 
-        public async Task<List<TaskItem>> GetTaskItems()
+        public List<TaskItem> GetTaskItemsByProjectName(string projectName)
         {
-            return await _context.TaskItems
-                .Include(t => t.Project)
-                .ToListAsync();
+            return _context.TaskItems
+                .Where(t => t.ProjectName == projectName)
+                //.Include(t => t.Project)
+                .ToList();
+        }
+
+        public List<TaskItem> GetAllTask()
+        {
+            return _context.TaskItems                
+                //.Include(t => t.Project)
+                .ToList();
         }
 
         public async Task UpdateTaskItem(TaskItem taskItem)
         {
             try
-            {
+            {                
                 _context.TaskItems.Update(taskItem);
                 await _context.SaveChangesAsync();
             }
             catch (Exception e)
             {
-                Debug.WriteLine("Task item with id: {0} update error", taskItem.Id);
+                Debug.WriteLine(string.Format("Task item with id: {0} update error", taskItem.Id));
                 Debug.WriteLine("Error details: \n" + e.InnerException.Message);
-
+                throw;
+            }
+        }
+        public async Task UpdateTaskRange(List<TaskItem> taskItems)
+        {
+            try
+            {
+                _context.TaskItems.UpdateRange(taskItems);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception e)
+            {                
+                Debug.WriteLine("Error details: \n" + e.InnerException.Message);
+                throw;
             }
         }
     }
