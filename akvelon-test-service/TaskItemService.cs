@@ -32,6 +32,31 @@ namespace akvelon_test_service
                 throw;
             }
         }
+        public async Task CreateTaskList(List<TaskItem> tasks, string projectName)
+        {
+            try
+            {
+                foreach (TaskItem item in tasks)
+                {
+                    _context.Add(new TaskItem
+                    {
+                        Name = item.Name,
+                        Description = item.Description,
+                        Priority = item.Priority,
+                        CurrentStatus = item.CurrentStatus,
+                        ProjectName = projectName
+                    }
+                    );
+
+                }
+                _context.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.InnerException.Message);
+                throw;
+            }
+        }
 
         public async Task DeleteTaskItem(TaskItem taskItem)
         {
@@ -43,6 +68,7 @@ namespace akvelon_test_service
             catch (Exception e)
             {
                 Debug.WriteLine(e.InnerException.Message);
+                throw;
             }
         }
 

@@ -21,10 +21,10 @@ namespace akvelon_test_data
         {
             // Entites PK definition  //
             builder.Entity<Project>()
-                .HasKey(prop => prop.Name);
+                .HasKey(p => p.Name);
             
             builder.Entity<TaskItem>()
-                .HasKey(testc => testc.Id);
+                .HasKey(t => t.Id);
 
             // Enums conversion to string //
             builder.Entity<TaskItem>()
@@ -49,6 +49,7 @@ namespace akvelon_test_data
             builder.Entity<Project>()
                 .HasMany(t => t.TaskItems)
                 .WithOne(p => p.Project)
+                .HasForeignKey( p => p.ProjectName)
                 .OnDelete(DeleteBehavior.Cascade);
         }
     }

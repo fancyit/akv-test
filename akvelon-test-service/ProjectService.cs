@@ -29,6 +29,7 @@ namespace akvelon_test_service
             {
                 Debug.WriteLine("Error creating the project, details: ");
                 Debug.WriteLine(e.InnerException.Message);
+                throw;
             }
         }
 
@@ -43,32 +44,33 @@ namespace akvelon_test_service
             {
                 Debug.WriteLine("Error deleting the project with name {0}, details: ", project.Name);
                 Debug.WriteLine(e.InnerException.Message);
+                throw;
             }
         }
 
-        public Task<List<Project>> GetFilteredProjects(DateTime dateTime)
+        public List<Project> GetFilteredProjects(DateTime dateTime)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<Project> GetProjectByName(string Name)
+        public Project GetProjectByName(string Name)
         {
-            return await _context.Projects
+            return _context.Projects
                     .Where(p => p.Name == Name)
                     .Include(p => p.TaskItems)
-                    .FirstOrDefaultAsync();
+                    .FirstOrDefault();
         }
 
-        public async Task<List<Project>> GetProjects()
+        public List<Project> GetProjects()
         {
 
-            return await _context.Projects
+            return _context.Projects
                 .Include(p => p.TaskItems)
-                .ToListAsync();
+                .ToList();
 
         }
 
-        public async Task UpdateTaskItem(Project project)
+        public async Task UpdateProject(Project project)
         {
             try
             {

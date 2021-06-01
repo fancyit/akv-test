@@ -7,11 +7,11 @@ namespace akvelon_test_data
 {
     public interface IProjectOperations
     {
-        Task<List<Project>> GetProjects();
-        Task<Project> GetProjectByName(string name);
+        List<Project> GetProjects();
+        Project GetProjectByName(string name);
         Task CreateProject(Project project);
         Task DeleteProject(Project project);
-        Task UpdateTaskItem(Project project);
-        Task<List<Project>> GetFilteredProjects(DateTime dateTime);
+        Task UpdateProject(Project project);
+        List<Project> GetFilteredProjects(DateTime dateTime);
     }
 }
